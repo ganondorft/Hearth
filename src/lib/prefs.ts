@@ -43,7 +43,7 @@ export function disabledReason (id: string, info?: SystemInfo): string | null {
 	if (id === 'lgLogo' && info && info.logo === 'unsupported') return "This TV doesn't have a setting for the LG logo at start.";
 	if (!info || info.root !== 'no' || ROOT_OPTIONS.indexOf(id) === -1) return null;
 	const kind = lastFailure();
-	const why = kind === 'denied' ? 'the TV refused the command.' : 'the Homebrew Channel service is not running. If this TV is rooted, open the Homebrew Channel once, then reopen Settings.';
+	const why = kind === 'denied' ? 'the TV refused the command. On webOS 11 Hearth needs a permission first: see "webOS 11" in the README.' : 'the Homebrew Channel service is not running. If this TV is rooted, open the Homebrew Channel once, then reopen Settings.';
 	return 'Needs a rooted TV: ' + why + (info.rootDetail ? ` (TV said: ${info.rootDetail})` : '');
 }
 

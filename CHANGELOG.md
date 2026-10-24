@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+**Fixes**
+- **webOS 11:** the options that need root no longer stay greyed out on a rooted webOS 11 TV once its one-time
+  permission step is done: [`tools/webos11-permission.sh`](tools/webos11-permission.sh), a boot hook, gives Hearth the
+  Homebrew Channel permission that the app installer leaves out (see "webOS 11" in the README). The "TV refused the
+  command" message now points there.
+- **Building on Windows:** the Home-button helper scripts are always written to the TV with plain line ends. A build
+  from a Windows checkout embedded them with CRLF, and turning on *Make this launcher the default instead of LG Home*
+  failed with `syntax error: unexpected word (expecting "then")`. `.gitattributes` keeps `*.sh` files LF.
+
 ## 1.1.0
 
 The launcher is now called **Hearth**, with a new icon, and it is faster, easier to set up and much more complete.

@@ -149,6 +149,25 @@ To undo it from a shell:
 luna-send -n 1 -f luna://com.webos.settingsservice/setSystemSettings '{"category":"general","settings":{"defaultApps":{"home":"com.webos.app.home"}}}'
 ```
 
+## webOS 11: one extra step on rooted TVs
+
+On webOS 11 (tested on an LG C4, firmware 43.21.73) the TV only lets an app use the Homebrew Channel's
+command service when the app's Luna permissions include `org.webosbrew.hbchannel.service.group`. The app
+installer leaves that out for Hearth, so even on a rooted TV every option that needs root is greyed out with
+*"the TV refused the command"*, the app icons are letters, and the wallpaper picker can't read the storage.
+
+[`tools/webos11-permission.sh`](tools/webos11-permission.sh) adds the permission. Because the installer writes
+Hearth's permission file again on every install or update, it is installed as a boot hook that checks it at
+each start (before Hearth's own boot helper). Once, from a computer on the same network:
+
+```
+scp -O tools/webos11-permission.sh root@TV_IP:/var/lib/webosbrew/init.d/40-hearth-permission
+ssh root@TV_IP 'chmod 755 /var/lib/webosbrew/init.d/40-hearth-permission; sh /var/lib/webosbrew/init.d/40-hearth-permission'
+```
+
+Then close and reopen Hearth. After updating Hearth, restart the TV (or run the second command again).
+To undo it, delete `/var/lib/webosbrew/init.d/40-hearth-permission` and reinstall Hearth.
+
 ## Troubleshooting
 
 - **"Can't read the storage" / a greyed-out row:** the message tells you which of these it is. *The Homebrew Channel service is not running*: the TV is not rooted, or it is rooted but the service has not started (open the Homebrew Channel once, then try again).
